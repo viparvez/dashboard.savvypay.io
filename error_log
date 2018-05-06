@@ -1,0 +1,2 @@
+[28-Aug-2017 18:34:04 Asia/Dhaka] PHP Parse error:  syntax error, unexpected end of file in /home/savvypay/dashboard.savvypay.io/storage/framework/views/615e3906bd6e0adb03968c09ff4ecef020d08fba.php on line 284
+[29-Aug-2017 10:48:37 Asia/Dhaka] PHP Fatal error:  Class 'App\settlementdetail' not found in /home/savvypay/dashboard.savvypay.io/app/Http/Controllers/PagesController.php on line 149
