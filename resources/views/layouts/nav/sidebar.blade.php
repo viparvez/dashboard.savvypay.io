@@ -11,10 +11,15 @@
           </a>
         </li>
         <li class="treeview">
-          <a href="{{route('transactions.index')}}">
+          <a href="#">
             <i class="fa fa-money"></i>
             <span>Transactions</span>
+            <i class="fa fa-angle-left pull-right"></i>
           </a>
+          <ul class="treeview-menu">
+            <li><a href="{{route('transactions.index')}}"><i class="fa fa-circle-o"></i> Successful Transactions</a></li>
+            <li><a href="{{route('transactions.otherTransactions')}}"><i class="fa fa-circle-o"></i> Other Transactions</a></li>
+          </ul>
         </li>
         <li>
           <a href="#">

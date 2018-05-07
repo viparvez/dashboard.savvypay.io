@@ -32,7 +32,7 @@
           <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="example2" class="table table-bordered table-hover">
+              <table id="" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>Transaction Number</th>
@@ -70,6 +70,7 @@
                 @endforeach
                 </tbody>
               </table>
+              <div class="col-md-3 col-md-offset-9">{{ $transactions->links() }}</div>
             </div>
             <!-- /.box-body -->
           </div>

@@ -71,4 +71,6 @@ Route::group(['middleware' => 'auth'], function(){
 	    'transactions' => 'TransactionController',
 	]);
 
+	Route::get('/transactions/other','TransactionController@otherTransactions')->name('transactions.otherTransactions');
+
 });

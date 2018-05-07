@@ -17,7 +17,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::where(['trxndeleted' => '0'])->orderBy('created_at','DESC')->get();
+        $transactions = Transaction::where(['trxndeleted' => '0', 'status' => 'SUCCESSFUL'])->orderBy('created_at','DESC')->paginate(25);
+        return view('layouts.pages.transactions', compact('transactions'));
+    }
+
+    public function otherTransactions()
+    {
+        $otransactions = Transaction::where(['trxndeleted' => '0'])->whereNotIn('status', ['INITIATED'])->orderBy('created_at','DESC')->paginate(25);
         return view('layouts.pages.transactions', compact('transactions'));
     }
 
@@ -134,7 +140,7 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $action)
     {
         //
     }
