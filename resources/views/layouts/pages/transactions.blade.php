@@ -41,6 +41,7 @@
                   <th>Method Type</th>
                   <th>Gateway</th>
                   <th>Date</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -49,75 +50,23 @@
                   <tr>
                     <td>{{$transaction->trxnnum}}</td>
                     <td>{{$transaction->User->name}}</td>
-                    <td>{{number_format($transaction->amount,2)}}</td>
-                    <td>{{$transaction->Methodtype->name}}</td>
-                    <td>{{$transaction->Gateway->name}}</td>
-                    <td>{{$transaction->created_at}}</td>
-                    <td><a class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$transaction->id}}" href="#">
-                    <span class="fa fa-expand"></span></a></td>
-                  </tr>
-
-
-                    <!-- Modal -->
-                  <div class="modal fade modal-lg col-lg-offset-2 col-lg-8" id="myModal{{$transaction->id}}" role="dialog">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                               <h4 class="modal-title">TRXN - {{$transaction->trxnnum}}</h4>
-                            </div>
-                              <div class="modal-body">
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Transaction ID:</div>
-                                  <div class="col-md-6">{{$transaction->id}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Transaction Number:</div>
-                                  <div class="col-md-6">{{$transaction->trxnnum}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Amount:</div>
-                                  <div class="col-md-6">{{number_format($transaction->amount,2)}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Gateway Type:</div>
-                                  <div class="col-md-6">{{$transaction->Gateway->name}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Method/Card Type:</div>
-                                  <div class="col-md-6">{{$transaction->Methodtype->name}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Merchant:</div>
-                                  <div class="col-md-6">{{$transaction->User->name}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">IPN URL:</div>
-                                  <div class="col-md-6">{{$transaction->callback_url}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Date:</div>
-                                  <div class="col-md-6">{{$transaction->created_at->format('d/m/Y g:i A')}}</div>
-                                </div> 
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Gateway Trxn ID:</div>
-                                  <div class="col-md-6">{{$transaction->gatewaytrxn_id}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Merchant Unique ID:</div>
-                                  <div class="col-md-6">{{$transaction->clientunique_id}}</div>
-                                </div>
-                                <div class="table table-bordered">
-                                  <div class="col-md-6">Reference:</div>
-                                  <div class="col-md-6">{{$transaction->reference}}</div>
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                      </div>
-                    </div>
+                    <td>{{$transaction->Transactiondetail->Currency->code}} {{number_format($transaction->Transactiondetail->subtotal,2)}}</td>
+                    <td>{{$transaction->Transactiondetail->Methodtype->name}}</td>
+                    <td>{{$transaction->Transactiondetail->Gateway->name}}</td>
+                    <td>{{$transaction->created_at->format('d/m/Y g:i A')}}</td>
+                    <td>
+                      @if($transaction->status == 'SUCCESSFUL')
+                        <button class="btn btn-xs btn-success">{{$transaction->status}}</button>
+                      @elseif($transaction->status == 'FAILED')
+                        <button class="btn btn-xs btn-warning">{{$transaction->status}}</button>
+                      @elseif($transaction->status == 'REJECTED')
+                        <button class="btn btn-xs btn-danger">{{$transaction->status}}</button>
+                      @else
+                        <button class="btn btn-xs btn-default">{{$transaction->status}}</button>
+                      @endif
+                    </td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show({{$transaction->id}}, 'transactions')"><span class="fa fa-expand"></span></a></td>
+                  </tr>      
                 @endforeach
                 </tbody>
               </table>
@@ -133,12 +82,30 @@
     <!-- /.content -->
   </div>
 
+
+  <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal'>&times;</button>
+        </div>
+        <div class="text-center">
+          <img src="{{url('/')}}/public/img/spinner.gif" id="spinner">
+        </div>
+
+        <div id="showcontent">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 2.3.8
+      <b>Version</b> 1.9.0
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+    <strong>Copyright &copy; {{date('Y')}} <a target="_blank" href="http://www.savvypay.io">Savvypay</a>.</strong> All rights
     reserved.
   </footer>
 

@@ -40,8 +40,6 @@
             <!-- /.box-header -->
             <div class="box-body">
               
-
-
               <table id="example2" class="table table-bordered table-hover">
                  <thead>
                  <tr>

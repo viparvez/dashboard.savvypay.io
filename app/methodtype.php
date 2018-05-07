@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class methodtype extends Model
+class Methodtype extends Model
 {
     protected $fillable = ['name','gateway_id'];
 

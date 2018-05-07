@@ -203,7 +203,6 @@ class SettingsController extends Controller
 
         if ($results == '') {
         	return $results->count();
-        	break;
         }
 
 

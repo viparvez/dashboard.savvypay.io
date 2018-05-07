@@ -67,4 +67,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/test/{user_id}/{methodtype_id}', 'PagesController@MerchantRuleForUser')->name('test');
 
 
+	Route::resources([
+	    'transactions' => 'TransactionController',
+	]);
+
 });

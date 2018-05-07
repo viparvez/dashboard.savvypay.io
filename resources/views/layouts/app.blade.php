@@ -29,7 +29,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        {{ config('app.name', 'Savvypay') }}
                     </a>
                 </div>
 
@@ -72,6 +72,9 @@
         </nav>
 
         @yield('content')
+
+        
+        
     </div>
 
     <!-- Scripts -->
