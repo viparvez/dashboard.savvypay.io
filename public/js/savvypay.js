@@ -4,12 +4,10 @@
  * @param {string} title - functions
  */
 
-function show(id, url) {
+function show(url) {
 
 	$('#preview').modal('show');
 	$("#spinner").show();
-
-	var showUrl = "http://localhost/dashboard.savvypay.io/"+url+"/"+id;
 	 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -18,7 +16,8 @@ function show(id, url) {
 	    $("#preview").find("#showcontent").html(this.responseText);
 	  }
 	};
-	xhttp.open("GET", showUrl, true);
+	xhttp.open("GET", url, true);
 	xhttp.send();
 
 }
+

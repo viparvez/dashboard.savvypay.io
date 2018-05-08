@@ -24,7 +24,6 @@ Route::get('/register', array('as' => 'register', 'uses' => 'PagesController@get
 Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/home', 'PagesController@index')->name('view-home');
-	Route::get('/transactions', 'PagesController@transactions')->name('view-transactions');
 
 	Route::get('/users', 'PagesController@listUsers')->name('listUsers');
 
@@ -69,6 +68,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::resources([
 	    'transactions' => 'TransactionController',
+	    'gateways' => 'GatewayController',
 	]);
 
 });
