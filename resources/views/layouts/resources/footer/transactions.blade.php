@@ -1,4 +1,3 @@
-<script src="{{url('/')}}/public/js/savvypay.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="{{url('/')}}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -14,6 +13,8 @@
 <script src="{{url('/')}}/public/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{url('/')}}/public/dist/js/demo.js"></script>
+
+<script src="{{url('/')}}/public/js/savvypay.js"></script>
 <!-- page script -->
 <script>
   $(function () {

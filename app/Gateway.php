@@ -16,4 +16,12 @@ class Gateway extends Model
 		return $this->hasMany('App\methodtype', 'gateway_id');
 	}
 
+	public function Createdby() {
+		return $this->belongsTo('App\User','createdbyuser_id');
+	}
+
+	public function Updatedby() {
+		return $this->belongsTo('App\User','updatedbyuser_id');
+	}
+
 }

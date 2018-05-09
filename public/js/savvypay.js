@@ -21,3 +21,70 @@ function show(url) {
 
 }
 
+
+/*
+Code that will act upon submission of edit #editForm
+Will post the data to the action URL
+*/
+
+$("#showcontent").on('click', '#submitEdit',function(e){
+
+	e.preventDefault();
+
+	var _url = $("#editForm").attr("action");
+
+	$.ajaxSetup({
+	  headers: {
+	    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	  }
+	});
+
+	var _data = $("#editForm").serialize();
+
+	  $.ajax({
+
+	      url: _url,
+
+	      type:'POST',
+
+	      dataType:"json",
+
+	      data:_data,
+
+	      success: function(data) {
+
+	          if($.isEmptyObject(data.error)){
+	            swal({
+	              title: "Updated!",
+	              text: "Data updated",
+	              icon: "success",
+	              button: false,
+	              timer: 2000,
+	              showCancelButton: false,
+	              showConfirmButton: false
+	            }).then(
+	              function () {
+	                window.location.reload(true);
+	              },
+	            );
+
+	          }else{
+	            
+	            printUpdateError(data.error);
+
+	          }
+
+	      }
+
+	  });
+
+});
+
+
+function printUpdateError(msg) {
+	$("#error_messages").find("ul").html('');
+	$("#error_messages").css('display','block');
+	$.each( msg, function( key, value ) {
+	  $("#error_messages").find("ul").append('<li>'+value+'</li>');
+	});
+}
