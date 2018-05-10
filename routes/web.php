@@ -42,11 +42,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/methodtype', 'PagesController@methodtype')->name('methodtype');
 	Route::post('/methodtype', 'SettingsController@SaveMethodtype')->name('saveMethodtype');
 
-	Route::get('/gateways', 'PagesController@gateways')->name('gateways');
-	Route::post('/gateway', 'SettingsController@SaveGateway')->name('SaveGateway');
-	Route::post('/gatewayupdate', 'SettingsController@UpdateGateway')->name('UpdateGateway');
-
-
 	Route::get('/settlementrules', 'PagesController@settlementrules')->name('settlementrules');
 	Route::post('/settlementrules', 'SettingsController@saveSettlementrules')->name('saveSettlementrules');
 	Route::post('/settlementrulesupdate', 'SettingsController@UpdateSettlementrules')->name('updateSettlementrules');

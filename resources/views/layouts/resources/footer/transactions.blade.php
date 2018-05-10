@@ -1,3 +1,4 @@
+<script src="public/js/sweetalert.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="{{url('/')}}/public/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->

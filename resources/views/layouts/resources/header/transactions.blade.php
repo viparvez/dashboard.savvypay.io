@@ -16,5 +16,3 @@
   <link rel="stylesheet" href="public/dist/css/skins/_all-skins.min.css">
 
  <link href="public/css/sweetalert.css" rel="stylesheet" type="text/css">
-  <script src="public/js/sweetalert.min.js"></script>
-  <script src="public/js/sweetalert-dev.js"></script>

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gateway extends Model
 {
-	protected $fillable = ['name','active'];
+	protected $fillable = ['name','active','createdbyuser_id', 'updatedbyuser_id'];
     
 	public function Transaction() {
 		return $this->hasMany('App\Transaction', 'gateway_id');

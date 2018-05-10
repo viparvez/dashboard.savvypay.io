@@ -90,7 +90,10 @@
             <h4 class="modal-title">Add New Gateway</h4>
           </div>
           <div class="modal-body">
-            <form name="gateway" method="POST" action="{{route('SaveGateway')}}">
+            <div class="alert alert-danger print-error-msg" style="display:none">
+              <ul></ul>
+            </div>
+            <form id="create" method="POST" action="{{route('gateways.store')}}">
             {{csrf_field()}}
               <div class="form-group">
                 <label for="name">Name:</label>
@@ -103,7 +106,8 @@
                   <option value="0">Inactive</option>
                 </select>
               </div>
-              <button class="btn btn-sm btn-info">SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='submit' type='submit'>SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='loading' style='display: none' disabled=''>Working...</button>
             </form>
           </div>
         </div>

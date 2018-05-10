@@ -39,7 +39,37 @@ class GatewayController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+
+            'name' => 'required',
+
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return response()->json(['error'=>$validator->errors()->all()]);
+        }
+
+        try {
+
+            Gateway::create(
+                [
+                    'name' => $request->name,
+                    'active' => $request->active,
+                    'createdbyuser_id' => Auth::user()->id,
+                    'updatedbyuser_id' => Auth::user()->id,
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ]
+            );
+
+            return response()->json(['success'=>'Record updated.']);
+
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -93,8 +123,8 @@ class GatewayController extends Controller
                   <div class='form-group'>
                     <label>Status</label>
                     <select name='status' class='form-control'>
-                        <option value='1' ".($gateway->status == '1' ? 'selected' : '')."> ACTIVE </option>;
-                        <option value='0' ".($gateway->status == '0' ? 'selected' : '')."> INACTIVE </option>;
+                        <option value='1' ".($gateway->active == '1' ? 'selected' : '')."> ACTIVE </option>;
+                        <option value='0' ".($gateway->active == '0' ? 'selected' : '')."> INACTIVE </option>;
                     </select>
                   </div>
                   <button class='btn btn-block btn-success btn-sm' id='submitEdit' type='submit'>SAVE</button>

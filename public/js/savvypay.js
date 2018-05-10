@@ -80,6 +80,9 @@ $("#showcontent").on('click', '#submitEdit',function(e){
 
 });
 
+/*
+Function to print error messages on update/delete
+*/
 
 function printUpdateError(msg) {
 	$("#error_messages").find("ul").html('');
@@ -88,3 +91,85 @@ function printUpdateError(msg) {
 	  $("#error_messages").find("ul").append('<li>'+value+'</li>');
 	});
 }
+
+
+/*
+Function for new data insertion\
+*/
+
+$(document).ready(function() {
+
+      $("#submit").click(function(e){
+
+        e.preventDefault();
+
+        var _url = $("#create").attr("action");
+
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var _data = $("#create").serialize();
+
+          $.ajax({
+
+              url: _url,
+
+              type:'POST',
+
+              dataType:"json",
+
+              data:_data,
+
+              success: function(data) {
+
+                  if($.isEmptyObject(data.error)){
+                    swal({
+                      title: "Created!",
+                      text: "New entry was successful!",
+                      icon: "success",
+                      button: false,
+                      timer: 2000,
+                      showCancelButton: false,
+                      showConfirmButton: false
+                    }).then(
+                      function () {
+                        window.location.reload(true);
+                      },
+                    );
+
+                  }else{
+                    
+                    printErrorMsg(data.error);
+
+                  }
+
+              }
+
+          });
+
+      }); 
+
+
+      $(document).ajaxStart(function () {
+          $("#loading").show();
+          $("#submit").hide();
+      }).ajaxStop(function () {
+          $("#loading").hide();
+          $("#submit").show();
+      });
+
+
+      function printErrorMsg (msg) {
+        $(".print-error-msg").find("ul").html('');
+        $(".print-error-msg").css('display','block');
+        $.each( msg, function( key, value ) {
+          $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+        });
+
+      }
+
+  });
