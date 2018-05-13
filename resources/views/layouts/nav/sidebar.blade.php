@@ -42,7 +42,7 @@
 
           <ul class="treeview-menu">
             <li><a href="{{route('gateways.index')}}"><i class="fa fa-circle-o"></i> Gateways</a></li>
-            <li><a href="{{route('methodtype')}}"><i class="fa fa-circle-o"></i> Method Types</a></li>
+            <li><a href="{{route('methodtypes.index')}}"><i class="fa fa-circle-o"></i> Method Types</a></li>
           </ul>
 
         </li>

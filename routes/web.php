@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resources([
 	    'transactions' => 'TransactionController',
 	    'gateways' => 'GatewayController',
+	    'methodtypes' => 'MethodtypeController',
 	]);
 
 });

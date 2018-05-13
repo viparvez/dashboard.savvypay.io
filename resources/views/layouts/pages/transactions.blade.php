@@ -118,7 +118,8 @@
                   <tr>
                     <td>{{$transaction->trxnnum}}</td>
                     <td>{{$transaction->User->name}}</td>
-                    <td>{{$transaction->Transactiondetail->Currency->code}} {{number_format($transaction->Transactiondetail->subtotal,2)}}</td>
+                    <td>{{$transaction->Transactiondetail->Currency->code}} </td>
+                    <td>{{number_format($transaction->Transactiondetail->subtotal,2)}}</td>
                     <td>{{$transaction->Transactiondetail->Methodtype->name}}</td>
                     <td>{{$transaction->Transactiondetail->Gateway->name}}</td>
                     <td>{{$transaction->created_at->format('d F Y g:i A')}}</td>
@@ -133,7 +134,7 @@
                         <button class="btn btn-xs btn-default">{{$transaction->status}}</button>
                       @endif
                     </td>
-                    <td><a class="btn btn-xs btn-primary" onclick="show({{$transaction->id}}, 'transactions')"><span class="fa fa-expand"></span></a></td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show('{{route('transactions.show',$transaction->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>      
                 @endforeach
                 </tbody>

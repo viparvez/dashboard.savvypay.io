@@ -41,8 +41,9 @@
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
-                  <th>Created</th>
-                  <th>Updated</th>
+                  <th>Created at</th>
+                  <th>Createdby</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -50,8 +51,9 @@
                   <tr>
                     <td>{{$indexKey+1}}</td>
                     <td>{{$type->name}}</td>
-                    <td>{{$type->created_at}}</td>
-                    <td>{{$type->updated_at}}</td>
+                    <td>{{$type->created_at->format('d F Y g:i A')}}</td>
+                    <td>{{$type->Createdby->name}}</td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show('{{route('methodtypes.show',$type->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
                 @endforeach
                 </tbody>
@@ -80,20 +82,52 @@
             <h4 class="modal-title">Create New Method Type</h4>
           </div>
           <div class="modal-body">
-            <form name="methodtype" method="POST" action="{{route('saveMethodtype')}}">
+            <div class="alert alert-danger print-error-msg" style="display:none">
+              <ul></ul>
+            </div>
+            <form name="create" id="create" method="POST" action="{{route('methodtypes.store')}}">
             {{csrf_field()}}
               <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" name="name" class="form-control" required="" placeholder="Name">
               </div>
-              <button class="btn btn-sm btn-info">SAVE</button>
+              <div class="form-group">
+                <label for="name">Status:</label>
+                <select class="form-control" name="active">
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+              <button class='btn btn-block btn-success btn-sm' id='submit' type='submit'>SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='loading' style='display: none' disabled=''>Working...</button>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
         
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger print-error-msg" id="error_messages" style="display:none">
+              <ul></ul>
+            </div>
+
+            <div class="text-center">
+            <img src="{{url('/')}}/public/img/spinner.gif" id="spinner">
+            </div>
+
+            <div id="showcontent">
+            
+          </div>
+          </div>
+        </div>
       </div>
     </div>
 

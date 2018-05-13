@@ -105,7 +105,6 @@ $(document).ready(function() {
 
         var _url = $("#create").attr("action");
 
-
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
