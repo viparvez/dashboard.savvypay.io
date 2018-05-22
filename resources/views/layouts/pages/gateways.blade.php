@@ -60,50 +60,12 @@
                       @endif
                     </td>
                     <td>{{$gateway->created_at}}</td>
-                    <td><button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#myModal{{$gateway->id}}">EDIT</button></td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show('{{route('gateways.show',$gateway->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
-
-
-                  <!-- Modal -->
-                    <div class="modal fade" id="myModal{{$gateway->id}}" role="dialog">
-                      <div class="modal-dialog">
-                      
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal{{$gateway->id}}">&times;</button>
-                            <h4 class="modal-title">EDIT: {{$gateway->name}}</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form name="gateway" method="POST" action="{{route('UpdateGateway')}}">
-                            {{csrf_field()}}
-                              <input type="hidden" name="id" value="{{$gateway->id}}">
-                              <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" name="name" class="form-control" required="" placeholder="Name" value="{{$gateway->name}}">
-                              </div>
-                              <div class="form-group">
-                                <label for="name">Status:</label>
-                                <select class="form-control" name="active">
-                                  <option value="1">Active</option>
-                                  <option value="0">Inactive</option>
-                                </select>
-                              </div>
-                              <button class="btn btn-sm btn-info">SAVE</button>
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                        
-                      </div>
-                    </div>
-
-
                 @endforeach
                 </tbody>
               </table>
+              <div class="col-md-3 col-md-offset-9">{{ $gateways->links() }}</div>
             </div>
             <!-- /.box-body -->
           </div>
@@ -128,7 +90,10 @@
             <h4 class="modal-title">Add New Gateway</h4>
           </div>
           <div class="modal-body">
-            <form name="gateway" method="POST" action="{{route('SaveGateway')}}">
+            <div class="alert alert-danger print-error-msg" style="display:none">
+              <ul></ul>
+            </div>
+            <form id="create" method="POST" action="{{route('gateways.store')}}">
             {{csrf_field()}}
               <div class="form-group">
                 <label for="name">Name:</label>
@@ -141,11 +106,9 @@
                   <option value="0">Inactive</option>
                 </select>
               </div>
-              <button class="btn btn-sm btn-info">SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='submit' type='submit'>SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='loading' style='display: none' disabled=''>Working...</button>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
         
@@ -153,12 +116,33 @@
     </div>
 
 
+
+    <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          </div>
+          <div class='alert alert-danger print-error-msg' id='error_messages' style='display:none'>
+            <ul></ul>
+          </div>
+          <div class="text-center">
+            <img src="{{url('/')}}/public/img/spinner.gif" id="spinner">
+          </div>
+
+          <div id="showcontent">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 2.3.8
+      <b>Version</b> 1.9.0
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
+    <strong>Copyright &copy; {{date('Y')}} <a target="_blank" href="http://www.savvypay.io">Savvypay</a>.</strong> All rights
     reserved.
   </footer>
 

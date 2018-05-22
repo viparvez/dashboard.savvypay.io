@@ -50,7 +50,7 @@
                 @foreach($refunds as $refund)
                   <tr>
                     <td>{{$refund->Transaction->trxnnum}}</td>
-                    <td>{{$refund->Transaction->User->name}}</td>
+                    <td>{{$refund->Transaction->Createdby->name}}</td>
                     <td>
                       @if($refund->status == 'REQUESTED')
                         <span class="btn btn-default btn-xs">{{$refund->status}}</span>
@@ -63,7 +63,7 @@
                     <td>&#2547 {{number_format($refund->Transaction->amount,2)}}</td>
                     <td>&#2547 {{number_format($refund->refd_amount,2)}}</td>
                     <td>{{$refund->updated_at}}</td>
-                    <td>{{$refund->Transaction->Gateway->name}}</td>
+                    <td>{{$refund->Transaction->Transactiondetail->Gateway->name}}</td>
                     <td><a class="btn btn-primary" data-toggle="modal" data-target="#myModal{{$refund->id}}" href="#">
                     <span class="fa fa-expand "></span></a></td>
                   </tr>
@@ -81,8 +81,8 @@
                                 <p><b>Transaction Number:</b>{{$refund->Transaction->trxnnum}}</p>
                                 <p><b>Amount: </b>{{number_format($refund->Transaction->amount,2)}}</p>
                                 <p><b>Status: </b>{{$refund->status}}</p>
-                                <p><b>Merchant: </b>{{$refund->Transaction->User->name}}</p>
-                                <p><b>Gateway: </b>{{$refund->Transaction->Gateway->name}}</p>
+                                <p><b>Merchant: </b>{{$refund->Transaction->Createdby->name}}</p>
+                                <p><b>Gateway: </b>{{$refund->Transaction->Transactiondetail->Gateway->name}}</p>
                                 <p><b>Requested on: </b>{{$refund->created_at->format('d/m/Y g:i A')}}</p>
                                 <p><b>Updated on: </b>{{$refund->updated_at->format('d/m/Y g:i A')}}</p>
                                 <p><b>Gateway Trxn ID: </b>{{$refund->Transaction->gatewaytrxn_id}}</p>

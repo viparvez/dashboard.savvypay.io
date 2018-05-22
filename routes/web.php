@@ -24,9 +24,8 @@ Route::get('/register', array('as' => 'register', 'uses' => 'PagesController@get
 Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/home', 'PagesController@index')->name('view-home');
-	Route::get('/transactions', 'PagesController@transactions')->name('view-transactions');
 
-	Route::get('/users', 'PagesController@listUsers')->name('listUsers');
+	//Route::get('/users', 'PagesController@listUsers')->name('listUsers');
 
 	Route::get('/adduser', 'PagesController@addUserView')->name('addUserView');
 	Route::post('/adduser', 'RegController@addUser')->name('addUser');
@@ -42,11 +41,6 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/methodtype', 'PagesController@methodtype')->name('methodtype');
 	Route::post('/methodtype', 'SettingsController@SaveMethodtype')->name('saveMethodtype');
-
-	Route::get('/gateways', 'PagesController@gateways')->name('gateways');
-	Route::post('/gateway', 'SettingsController@SaveGateway')->name('SaveGateway');
-	Route::post('/gatewayupdate', 'SettingsController@UpdateGateway')->name('UpdateGateway');
-
 
 	Route::get('/settlementrules', 'PagesController@settlementrules')->name('settlementrules');
 	Route::post('/settlementrules', 'SettingsController@saveSettlementrules')->name('saveSettlementrules');
@@ -66,5 +60,12 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/test/{user_id}/{methodtype_id}', 'PagesController@MerchantRuleForUser')->name('test');
 
+
+	Route::resources([
+	    'transactions' => 'TransactionController',
+	    'gateways' => 'GatewayController',
+	    'methodtypes' => 'MethodtypeController',
+	    'users' => 'UserController',
+	]);
 
 });

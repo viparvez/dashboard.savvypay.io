@@ -6,12 +6,12 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <li class="treeview">
-          <a href="http://localhost/payment/home">
+          <a href="{{url('/')}}/home">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="{{route('view-transactions')}}">
+          <a href="{{route('transactions.index')}}">
             <i class="fa fa-money"></i>
             <span>Transactions</span>
           </a>
@@ -41,8 +41,8 @@
           </a>
 
           <ul class="treeview-menu">
-            <li><a href="{{route('gateways')}}"><i class="fa fa-circle-o"></i> Gateways</a></li>
-            <li><a href="{{route('methodtype')}}"><i class="fa fa-circle-o"></i> Method Types</a></li>
+            <li><a href="{{route('gateways.index')}}"><i class="fa fa-circle-o"></i> Gateways</a></li>
+            <li><a href="{{route('methodtypes.index')}}"><i class="fa fa-circle-o"></i> Method Types</a></li>
           </ul>
 
         </li>
@@ -71,7 +71,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{route('listUsers')}}"><i class="fa fa-circle-o"></i> List Users</a></li>
+            <li><a href="{{route('users.index')}}"><i class="fa fa-circle-o"></i> List Users</a></li>
             <li><a href="{{route('addUserView')}}"><i class="fa fa-circle-o"></i> Add User</a></li>
           </ul>
         </li>

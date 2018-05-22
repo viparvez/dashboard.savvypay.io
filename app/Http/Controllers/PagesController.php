@@ -26,9 +26,8 @@ class PagesController extends Controller
     }
 
     public function transactions() {
-    	$transactions = Transaction::where(['trxndeleted' => '0'])->get();
-      return view('layouts.pages.transactions', compact('transactions'));
-      //return $transactions;
+        $transactions = Transaction::where(['trxndeleted' => '0'])->get();
+        return view('layouts.pages.transactions', compact('transactions'));
     }
 
     public function addUserView() {

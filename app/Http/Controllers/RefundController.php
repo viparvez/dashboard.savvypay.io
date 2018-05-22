@@ -14,7 +14,7 @@ class RefundController extends Controller
 {
     public function refReq(Request $request) {
     	$trxnnum = $request->trxnnum;
-		$transactions = Transaction::where(['trxnnum' => $trxnnum, 'trxndeleted' => '0', 'status' => 'COMPLETED'])->get();
+		$transactions = Transaction::where(['trxnnum' => $trxnnum])->get();
 		return view('layouts.pages.refund2', compact('transactions'));
 	}  
 
