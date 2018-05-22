@@ -103,6 +103,18 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'line1' => [
+            'required' => 'Address line 1 is required'
+        ],
+
+        'po' => [
+            'required' => 'Post office name is required'
+        ],
+
+        'pocode' => [
+            'required' => 'Postal code is required'
+        ]
     ],
 
     /*

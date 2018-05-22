@@ -71,7 +71,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{route('listUsers')}}"><i class="fa fa-circle-o"></i> List Users</a></li>
+            <li><a href="{{route('users.index')}}"><i class="fa fa-circle-o"></i> List Users</a></li>
             <li><a href="{{route('addUserView')}}"><i class="fa fa-circle-o"></i> Add User</a></li>
           </ul>
         </li>

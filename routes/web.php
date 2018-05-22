@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/home', 'PagesController@index')->name('view-home');
 
-	Route::get('/users', 'PagesController@listUsers')->name('listUsers');
+	//Route::get('/users', 'PagesController@listUsers')->name('listUsers');
 
 	Route::get('/adduser', 'PagesController@addUserView')->name('addUserView');
 	Route::post('/adduser', 'RegController@addUser')->name('addUser');
@@ -65,6 +65,7 @@ Route::group(['middleware' => 'auth'], function(){
 	    'transactions' => 'TransactionController',
 	    'gateways' => 'GatewayController',
 	    'methodtypes' => 'MethodtypeController',
+	    'users' => 'UserController',
 	]);
 
 });

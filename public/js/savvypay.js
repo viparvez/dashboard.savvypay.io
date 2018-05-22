@@ -111,7 +111,9 @@ $(document).ready(function() {
           }
         });
 
-        var _data = $("#create").serialize();
+        //var _data = $("#create").serialize();
+
+        var _data = new FormData($('#create')[0]);
 
           $.ajax({
 
@@ -122,6 +124,10 @@ $(document).ready(function() {
               dataType:"json",
 
               data:_data,
+
+              processData: false,
+              
+    		  contentType: false,
 
               success: function(data) {
 
@@ -172,3 +178,12 @@ $(document).ready(function() {
       }
 
   });
+
+
+$("#api_user").on("click", function(){
+  if (this.value == '1') {
+    $("#merchantOps").hide();
+  } else {
+    $("#merchantOps").show();
+  }
+});

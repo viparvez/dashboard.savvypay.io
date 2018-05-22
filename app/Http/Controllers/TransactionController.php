@@ -23,7 +23,7 @@ class TransactionController extends Controller
         $transactions = Transaction::where(['trxndeleted' => '0'])->orderBy('created_at','DESC')->paginate(25);
         $gateways = Gateway::where(['active' => '1'])->get();
         $methods = Methodtype::all();
-        $merchants = User::where(['userdeleted' => '0'])->get();
+        $merchants = User::where(['deleted' => '0'])->get();
         return view('layouts.pages.transactions', compact('transactions','gateways','methods','merchants'));
     }
 
