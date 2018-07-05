@@ -48,7 +48,7 @@ class TransactionController extends Controller
     {
         $gateways = Gateway::where(['active' => '1'])->get();
         $methods = Methodtype::all();
-        $merchants = User::where(['userdeleted' => '0'])->get();
+        $merchants = User::where(['deleted' => '0'])->get();
 
         $search = Transaction::select('transactions.*');
 
@@ -112,7 +112,7 @@ class TransactionController extends Controller
                             </tr>
 
                             <tr>
-                                <td>Amount:</td><td>".number_format($transaction->Transactiondetail->subtotal,2)." ".$transaction->Transactiondetail->Currency->code."</td>
+                                <td>Amount:</td><td>".$transaction->Transactiondetail->Currency->code." ".number_format($transaction->Transactiondetail->subtotal,2)."</td>
                             </tr>
 
 

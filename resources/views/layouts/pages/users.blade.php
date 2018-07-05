@@ -55,9 +55,9 @@
                     <td>{{$user->email}}</td>
                     <td>
                       @if($user->active == 1)
-                        <span class="btn btn-success btn-small">Active</span>
+                        <span class="btn btn-success btn-xs">Active</span>
                       @else
-                        <span class="btn btn-danger btn-small">Inactive</span>
+                        <span class="btn btn-danger btn-xs">Inactive</span>
                       @endif
                     </td>
                     <td>{{$user->created_at}}</td>
@@ -109,7 +109,7 @@
 
               <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" name="username" class="form-control" required="" placeholder="Name">
+                <input type="text" name="username" class="form-control" required="" placeholder="Username">
               </div>
 
               <div class="form-group">
@@ -140,7 +140,8 @@
 
               <div class="form-group" id="merchantOps">
                 <label for="country">Merchant Account:</label>
-                <select class="form-control" name="user_id">
+                <select class="form-control" name="merchant_user_id">
+                  <option value="">SELECT</option>
                   @foreach($merchants as $merchant)
                   <option value="{{$merchant->id}}">{{$merchant->name}}</option>
                   @endforeach

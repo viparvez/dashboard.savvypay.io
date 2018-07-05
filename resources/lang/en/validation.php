@@ -114,6 +114,9 @@ return [
 
         'pocode' => [
             'required' => 'Postal code is required'
+        ],
+        'trxnnum' => [
+            'required' => 'Transaction number is required.'
         ]
     ],
 

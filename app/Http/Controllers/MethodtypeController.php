@@ -17,7 +17,7 @@ class MethodtypeController extends Controller
      */
     public function index()
     {
-        $types = Methodtype::where(['active' => '1'])->get();
+        $types = Methodtype::all();
         return view('layouts.pages.listmethodtype', compact('types'));
     }
 

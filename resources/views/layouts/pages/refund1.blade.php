@@ -24,32 +24,44 @@
       </ol>
     </section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <!-- left column -->
-        <div class="col-md-12">
-          <!-- general form elements -->
-          <!-- form start -->
-          <form role="form" name="RefundReq" action="{{route('refReq')}}" method="POST">
-            <div class="col-md-4 col-md-offset-4">
-                    <input type="hidden" name="_token" value="{{csrf_token()}}">
-                    <div class="form-group">
-                      <input type="text" class="form-control" id="trxnnum" name="trxnnum" placeholder="Entern Transaction Number" required="">
-                    </div>
-
-                    <div class="form-group text-center">
-                      <button class="btn btn-warning" type="submit">Submit</button>
-                    </div>
-            </div>
-          </form>          <!-- /.box -->
-        </div>
-        <!--/.col (right) -->
-      </div>
-      <!-- /.row -->
-    </section>
+    <div style="padding: 20px">
+      <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#myModal">+ New</button>
+    </div>
   
   </div>
+
+  <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+      
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Refund Request</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger print-error-msg" style="display:none">
+              <ul></ul>
+            </div>
+            <form id="refund_search" method="POST" action="">
+            {{csrf_field()}}
+              <div class="form-group">
+                <label for="name">Transaction Number:</label>
+                <input type="text" name="trxnnum" class="form-control" required="" placeholder="Transaction Number">
+              </div>
+              <div class="form-group">
+                
+              </div>
+              <button class='btn btn-block btn-success btn-sm' id='submit' type='submit'>SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='loading' style='display: none' disabled=''>Working...</button>
+            </form>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">

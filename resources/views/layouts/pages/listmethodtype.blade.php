@@ -42,7 +42,8 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Created at</th>
-                  <th>Createdby</th>
+                  <th>Created by</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -53,6 +54,13 @@
                     <td>{{$type->name}}</td>
                     <td>{{$type->created_at->format('d F Y g:i A')}}</td>
                     <td>{{$type->Createdby->name}}</td>
+                    <td>
+                      @if($type->active == '1')
+                        <span class="btn btn-flat btn-xs bg bg-olive">Active</span>
+                      @else
+                        <span class="btn btn-flat btn-xs bg bg-maroon">Inactive</span>
+                      @endif
+                    </td>
                     <td><a class="btn btn-xs btn-primary" onclick="show('{{route('methodtypes.show',$type->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
                 @endforeach

@@ -66,6 +66,9 @@ Route::group(['middleware' => 'auth'], function(){
 	    'gateways' => 'GatewayController',
 	    'methodtypes' => 'MethodtypeController',
 	    'users' => 'UserController',
+	    'refunds' => 'RefundController',
 	]);
+
+	Route::post('/refunds/search', 'RefundController@search')->name('refunds.search');
 
 });

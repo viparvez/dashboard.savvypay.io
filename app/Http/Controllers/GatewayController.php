@@ -51,6 +51,8 @@ class GatewayController extends Controller
             return response()->json(['error'=>$validator->errors()->all()]);
         }
 
+        DB::beginTransaction();
+
         try {
 
             Gateway::create(
@@ -64,10 +66,13 @@ class GatewayController extends Controller
                 ]
             );
 
-            return response()->json(['success'=>'Record updated.']);
+            if(DB::commit()) {
+                return response()->json(['success'=>'Record updated.']);
+            }
 
 
         } catch (\Exception $e) {
+            DB::rollback();
             return $e->getMessage();
         }
     }

@@ -118,8 +118,7 @@
                   <tr>
                     <td>{{$transaction->trxnnum}}</td>
                     <td>{{$transaction->User->name}}</td>
-                    <td>{{$transaction->Transactiondetail->Currency->code}} </td>
-                    <td>{{number_format($transaction->Transactiondetail->subtotal,2)}}</td>
+                    <td>{{$transaction->Transactiondetail->Currency->code}} {{number_format($transaction->Transactiondetail->subtotal,2)}}</td>
                     <td>{{$transaction->Transactiondetail->Methodtype->name}}</td>
                     <td>{{$transaction->Transactiondetail->Gateway->name}}</td>
                     <td>{{$transaction->created_at->format('d F Y g:i A')}}</td>

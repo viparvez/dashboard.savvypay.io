@@ -43,4 +43,8 @@ class User extends Authenticatable
     public function Merchantrule() {
         return $this->hasMany('App\merchantrule', 'user_id')->where(['deleted' => '0']);
     }
+
+    public function Merchant() {
+        return $this->belongsTo('App\User', 'merchant_user_id');
+    }
 }
