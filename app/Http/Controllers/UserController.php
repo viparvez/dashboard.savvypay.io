@@ -48,7 +48,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|Regex:/^[\D]+$/i|max:70',
-            'username' => 'required|Regex:/^[\D]+$/i|max:20',
+            'username' => 'required|Regex:/^[\D]+$/i|max:20|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -263,11 +263,10 @@ class UserController extends Controller
 
         $form = "
             <div class='modal-body'>
-            <div class='alert alert-danger print-error-msg' style='display:none'>
-              <ul></ul>
-            </div>
+            
             <form method='POST' id='editForm' action='".route('users.update',$id)."' enctype='multipart/form-data'>
             ".csrf_field()."
+            <input type='hidden' name='_method' value='PUT'>
 
             <div class='col-md-6 col-xs-12'>
               <div class='form-group'>
@@ -289,7 +288,7 @@ class UserController extends Controller
                 <label for='status'>Status:</label>
                 <select class='form-control' name='active'>
                   <option value='1' ".($user->active == '1' ? 'selected' : '').">Active</option>
-                  <option value='0' ".($user->active == '1' ? 'selected' : '').">Inactive</option>
+                  <option value='0' ".($user->active == '0' ? 'selected' : '').">Inactive</option>
                 </select>
               </div>
               
@@ -305,14 +304,15 @@ class UserController extends Controller
                 <input type='text' name='line1' class='form-control' required='' placeholder='Address Line 1' value='".$user->Address->line1."'>
               </div>
 
-              <div class='form-group'>
-                <label for='address'>Address Line 2:</label>
-                <input type='text' name='line2' class='form-control' required='' placeholder='Address Line 2' value='".$user->Address->line2."'>
-              </div>
 
             </div>
               
             <div class='col-md-6 col-xs-12'>
+
+              <div class='form-group'>
+                <label for='address'>Address Line 2:</label>
+                <input type='text' name='line2' class='form-control' required='' placeholder='Address Line 2' value='".$user->Address->line2."'>
+              </div>
 
               <div class='form-group'>
                 <label for='post office'>Post Office:</label>
@@ -366,7 +366,81 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|Regex:/^[\D]+$/i|max:70',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'image' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'line1' => 'required',
+            'po' => 'required',
+            'pocode' => 'required',
+            'area' => 'required',
+            'city' => 'required',
+            'country' => 'required',
+            'phone' => 'required|numeric',
+        ]);
+
+
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()->all()]);
+        }
+
+        $user = User::where(['id' => $id])->first();
+
+        DB::beginTransaction();
+
+        try {
+
+            User::where(['id' => $id])->update(
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'active' => $request->active,
+                    'updatedbyuser_id' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ]
+            );
+
+            if ($request->hasFile('image')) {
+
+                $file = $request->file('image');
+                $name = $id.'.'.$file->getClientOriginalExtension();
+                $file->move('public/uploads', $name.'.jpg');
+                $image = 'public/uploads/'.$name.'.jpg';
+                
+            } else {
+                $image = $user->Address->image;
+            }
+
+            Address::where(['user_id' => $id])->update(
+                [
+                    'line1' => $request->line1,
+                    'line2' => $request->line2,
+                    'po' => $request->po,
+                    'pocode' => $request->pocode,
+                    'area' => $request->area,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'phone' => $request->phone,
+                    'image' => $image,
+                    'updatedbyuser_id' => Auth::user()->id,
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ]
+            );
+
+
+            DB::commit();
+
+            return response()->json(['success'=>'User updated.']);            
+        
+        } catch (\Exception $e) {
+
+          DB::rollback();
+          echo $e->getMessage();
+          return response()->json(['error'=>array('Could not update user')]);
+
+        }
+
+
     }
 
     /**

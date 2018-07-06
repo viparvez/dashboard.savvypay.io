@@ -49,10 +49,10 @@ class LoginController extends Controller
     {
         $credentials = $request->only($this->username(), 'password');
         $credentials['active'] = 1;
+        $credentials['api_user'] = '0';
         $credentials['deleted'] = 0;
 
         return $credentials;
-        //return $request->only($this->username(), 'password');
     }
 
 }

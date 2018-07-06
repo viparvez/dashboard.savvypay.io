@@ -39,7 +39,9 @@ $("#showcontent").on('click', '#submitEdit',function(e){
 	  }
 	});
 
-	var _data = $("#editForm").serialize();
+	//var _data = $("#editForm").serialize();
+
+  var _data = new FormData($('#editForm')[0]);
 
 	  $.ajax({
 
@@ -50,6 +52,10 @@ $("#showcontent").on('click', '#submitEdit',function(e){
 	      dataType:"json",
 
 	      data:_data,
+
+        processData: false,
+              
+        contentType: false,
 
 	      success: function(data) {
 
@@ -127,7 +133,7 @@ $(document).ready(function() {
 
               processData: false,
               
-    		  contentType: false,
+    		      contentType: false,
 
               success: function(data) {
 
@@ -187,3 +193,4 @@ $("#api_user").on("click", function(){
     $("#merchantOps").show();
   }
 });
+
