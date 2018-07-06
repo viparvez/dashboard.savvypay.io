@@ -57,6 +57,7 @@ class RefundController extends Controller
                 [
                     'transaction_id' => $request->transaction_id,
                     'refundnote' => $request->refundnote,
+                    'rejectionreason' => '',
                     'created_at' => date('Y-m-d h:i:s'),
                     'updated_at' => date('Y-m-d h:i:s'),
                     'createdbyuser_id' => Auth::user()->id,
@@ -86,7 +87,63 @@ class RefundController extends Controller
      */
     public function show($id)
     {
-        //
+        
+        $refund = Refund::where(['id' => $id])->first();
+
+        if ($refund->status = 'REJECTED') {
+            $reason = "
+                <tr>
+                  <td>Rejection reason</td><td>".$refund->rejectionreason."</td>
+                </tr>
+
+            ";
+        } else {
+            $reason = "";
+        }
+
+        $data = "
+            <div class='box box-primary' style='font-weight:bold'>
+                <div class='box-body box-profile'>
+
+                  <table class='table table-striped details-view'>
+                    <tr>
+                      <td>Transaction Number</td><td>".$refund->Transaction->trxnnum."</td>
+                    </tr>
+                    <tr>
+                      <td>Merchant</td><td>".$refund->Transaction->Createdby->name."</td>
+                    </tr>
+
+                    <tr>
+                      <td>Subtotal</td><td>".$refund->Transaction->Transactiondetail->Currency->code. ' ' .$refund->Transaction->Transactiondetail->subtotal."</td>
+                    </tr>
+
+                    <tr>
+                      <td>Method</td><td>".$refund->Transaction->Transactiondetail->Methodtype->name."</td>
+                    </tr>
+
+                    <tr>
+                      <td>Created at</td><td>".$refund->Transaction->created_at."</td>
+                    </tr>
+
+                    <tr>
+                      <td>Status</td><td>".$refund->status."</td>
+                    </tr>
+
+                    <tr>
+                      <td>Refund requested at</td><td>".$refund->created_at."</td>
+                    </tr>
+
+                    <tr>
+                      <td>Updated at</td><td>".$refund->updated_at."</td>
+                    </tr>
+
+                  </table>
+
+                </div>
+              </div>
+        ";
+
+        return $data;
     }
 
     /**
@@ -154,6 +211,7 @@ class RefundController extends Controller
                     transactions.trxndeleted = '0'
                 AND transactions.`status` = 'SUCCESSFUL'
                 AND transactions.trxnnum = '$trxnnum'
+                AND transactions.updated_at >= CURRENT_DATE - INTERVAL 3 DAY
                 AND transactions.id NOT IN (
                     SELECT
                         transaction_id

@@ -8,6 +8,7 @@ function show(url) {
 
 	$('#preview').modal('show');
 	$("#spinner").show();
+  $("#preview").find("#showcontent").html("");
 	 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {

@@ -52,7 +52,7 @@
                   <th>Merchant</th>
                   <th>Status</th>
                   <th>Amount</th>
-                  <th>Gateway</th>
+                  <th>Method</th>
                   <th>Updated at</th>
                   <th>Action</th>
                 </tr>
@@ -72,13 +72,9 @@
                       @endif
                     </td>
                     <td>{{$refund->Transaction->Transactiondetail->Currency->code}} {{number_format($refund->Transaction->Transactiondetail->subtotal,2)}}</td>
-                    <td>{{$refund->Transaction->Transactiondetail->Gateway->name}}</td>
+                    <td>{{$refund->Transaction->Transactiondetail->Methodtype->name}}</td>
                     <td>{{date_format($refund->updated_at,'F d, Y')}}</td>
-                    <td>
-                      <a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#myModal{{$refund->id}}" href="#">
-                        <span class="fa fa-expand "></span>
-                      </a>
-                    </td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show('{{route('refunds.show',$refund->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
                @endforeach
                 </tbody>
@@ -129,6 +125,30 @@
         
       </div>
     </div>
+
+
+    <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          </div>
+          <div class='alert alert-danger print-error-msg' id='error_messages' style='display:none'>
+            <ul></ul>
+          </div>
+          <div class="text-center">
+            <img src="{{url('/')}}/public/img/spinner.gif" id="spinner">
+          </div>
+
+          <div id="showcontent">
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
 
   <!-- /.content-wrapper -->

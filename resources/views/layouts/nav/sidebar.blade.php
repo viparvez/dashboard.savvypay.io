@@ -48,18 +48,9 @@
         </li>
 
         <li>
-          <a href="#">
+          <a href="{{route('refunds.index')}}">
             <i class="fa fa-reply"></i> <span>Refunds</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
           </a>
-
-          <ul class="treeview-menu">
-            <li><a href="{{route('refunds.index')}}"><i class="fa fa-circle-o"></i> List Refunds</a></li>
-            <li><a href="{{route('refReqView')}}"><i class="fa fa-circle-o"></i> Create Refund Request</a></li>
-          </ul>
-
         </li>
 
         <li class="treeview">
