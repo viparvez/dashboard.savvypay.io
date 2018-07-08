@@ -53,71 +53,8 @@
                     <td>{{$rule->Methodtype->name}}</td>
                     <td>{{$rule->bill_policy}}</td>
                     <td>{{$rule->amount}}</td>
-                    <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal{{$rule->id}}">EDIT</button></td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show('{{route('settlementrules.show',$rule->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
-
-
-                  <!-- Modal -->
-                    <div class="modal fade" id="myModal{{$rule->id}}" role="dialog">
-                      <div class="modal-dialog">
-                      
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">{{$rule->name}}</h4>
-                          </div>
-                          <div class="modal-body">
-                            <form name="settlementruleupdate" method="POST" action="{{route('updateSettlementrules')}}">
-                            {{csrf_field()}}
-                            <input type="hidden" name="id" value="{{$rule->id}}">
-                              <div class="form-group">
-                                <label for="name">Name:</label>
-                                <input type="text" name="name" class="form-control" required="" placeholder="Name" value="{{$rule->name}}" disabled>
-                              </div>
-                              <div class="form-group">
-                                <label for="methodtype">Method Type:</label>
-                                <select name="methodtype_id" class="form-control" required="" disabled="">
-                                @foreach($methodtypes as $methodtype)
-                                  
-                                    @if($rule->Methodtype->name == $methodtype->name)
-                                      <option value="{{$methodtype->id}}" selected>{{$methodtype->name}}</option>
-                                    @else
-                                      <option value="{{$methodtype->id}}">{{$methodtype->name}}</option>
-                                    @endif
-                                  
-                                @endforeach
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <label for="billing_policy">Billing Policy</label>
-                                <select name="bill_policy" class="form-control" required="">
-                                  @if($rule->bill_policy == 'PERCENTAGE')
-                                    <option value="PERCENTAGE" SELECTED>PERCENTAGE</option>
-                                    <option value="AMOUNT">FIXED AMOUNT</option>
-                                  @elseif($rule->bill_policy == 'AMOUNT')
-                                    <option value="PERCENTAGE">PERCENTAGE</option>
-                                    <option value="AMOUNT" SELECTED>FIXED AMOUNT</option>
-                                  @else
-                                  @endif
-                                </select>
-                              </div>
-                              <div class="form-group">
-                                <label for="amount">Value</label>
-                                <input type="text" name="amount" class="form-control" required="" placeholder="Value" value="{{$rule->amount}}">
-                              </div>
-                              <div class="text-center">
-                                <button class="btn btn-sm btn-info">SAVE</button>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                        
-                      </div>
-                    </div>
 
                 @endforeach
                 </tbody>
@@ -145,7 +82,10 @@
             <h4 class="modal-title">Create New Settlement Rule</h4>
           </div>
           <div class="modal-body">
-            <form name="methodtype" method="POST" action="{{route('saveSettlementrules')}}">
+            <div class="alert alert-danger print-error-msg" style="display:none">
+              <ul></ul>
+            </div>
+            <form name="methodtype" id="create" method="POST" action="{{route('settlementrules.store')}}">
             {{csrf_field()}}
               <div class="form-group">
                 <label for="name">Name:</label>
@@ -154,6 +94,7 @@
               <div class="form-group">
                 <label for="methodtype">Method Type:</label>
                 <select name="methodtype_id" class="form-control" required="">
+                  <option value="">SELECT</option>
                 @foreach($methodtypes as $methodtype)
                   <option value="{{$methodtype->id}}">{{$methodtype->name}}</option>
                 @endforeach
@@ -162,6 +103,7 @@
               <div class="form-group">
                 <label for="billing_policy">Billing Policy</label>
                 <select name="bill_policy" class="form-control" required="">
+                  <option value="">SELECT</option>
                   <option value="PERCENTAGE">PERCENTAGE</option>
                   <option value="AMOUNT">FIXED AMOUNT</option>
                 </select>
@@ -170,16 +112,37 @@
                 <label for="amount">Value</label>
                 <input type="text" name="amount" class="form-control" required="" placeholder="Value">
               </div>
-              <button class="btn btn-sm btn-info">SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='submit' type='submit'>SAVE</button>
+              <button class='btn btn-block btn-success btn-sm' id='loading' style='display: none' disabled=''>Working...</button>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div>
         
       </div>
     </div>
+
+    <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
+          </div>
+          <div class='alert alert-danger print-error-msg' id='error_messages' style='display:none'>
+            <ul></ul>
+          </div>
+          <div class="text-center">
+            <img src="{{url('/')}}/public/img/spinner.gif" id="spinner">
+          </div>
+
+          <div id="showcontent">
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">

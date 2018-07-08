@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class settlementrule extends Model
+class Settlementrule extends Model
 {
     protected $fillable = ['name','methodtype_id', 'bill_policy', 'amount', 'deleted'];
 

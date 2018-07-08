@@ -117,6 +117,9 @@ return [
         ],
         'trxnnum' => [
             'required' => 'Transaction number is required.'
+        ],
+        'methodtype_id' => [
+            'required' => 'Method type field is required.'
         ]
     ],
 

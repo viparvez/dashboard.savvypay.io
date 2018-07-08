@@ -25,24 +25,16 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::get('/home', 'PagesController@index')->name('view-home');
 
-	//Route::get('/users', 'PagesController@listUsers')->name('listUsers');
-
-	Route::get('/adduser', 'PagesController@addUserView')->name('addUserView');
-	Route::post('/adduser', 'RegController@addUser')->name('addUser');
-	Route::post('/updateUser/{id}', 'RegController@updateUser')->name('updateUser');
-
 	Route::get('/settlements', 'PagesController@setlView')->name('setlView');
 	Route::post('/settle', 'SettlementController@settle')->name('settle');
 
 	Route::get('/requestarefund', 'PagesController@refReq')->name('refReqView');
 	Route::POST('/request-refund', 'RefundController@refReq')->name('refReq');
 	Route::POST('/postrefreq', 'RefundController@postrefreq')->name('postrefreq');
-	Route::get('/refundlist', 'PagesController@listRefunds')->name('listRefunds');
 
 	Route::get('/methodtype', 'PagesController@methodtype')->name('methodtype');
 	Route::post('/methodtype', 'SettingsController@SaveMethodtype')->name('saveMethodtype');
 
-	Route::get('/settlementrules', 'PagesController@settlementrules')->name('settlementrules');
 	Route::post('/settlementrules', 'SettingsController@saveSettlementrules')->name('saveSettlementrules');
 	Route::post('/settlementrulesupdate', 'SettingsController@UpdateSettlementrules')->name('updateSettlementrules');
 
@@ -67,6 +59,7 @@ Route::group(['middleware' => 'auth'], function(){
 	    'methodtypes' => 'MethodtypeController',
 	    'users' => 'UserController',
 	    'refunds' => 'RefundController',
+	    'settlementrules' => 'SettlementruleController',
 	]);
 
 	Route::post('/refunds/search', 'RefundController@search')->name('refunds.search');

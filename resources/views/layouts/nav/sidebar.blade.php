@@ -26,7 +26,7 @@
 
           <ul class="treeview-menu">
             <li><a href="{{route('setlView')}}"><i class="fa fa-circle-o"></i> List Settlements</a></li>
-            <li><a href="{{route('settlementrules')}}"><i class="fa fa-circle-o"></i> Manage Settlement Rules</a></li>
+            <li><a href="{{route('settlementrules.index')}}"><i class="fa fa-circle-o"></i> Manage Settlement Rules</a></li>
             <li><a href="{{route('merchantrule')}}"><i class="fa fa-circle-o"></i> Merchant Settlements</a></li>
           </ul>
 
