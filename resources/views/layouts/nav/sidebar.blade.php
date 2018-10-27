@@ -27,7 +27,7 @@
           <ul class="treeview-menu">
             <li><a href="{{route('setlView')}}"><i class="fa fa-circle-o"></i> List Settlements</a></li>
             <li><a href="{{route('settlementrules.index')}}"><i class="fa fa-circle-o"></i> Manage Settlement Rules</a></li>
-            <li><a href="{{route('merchantrule')}}"><i class="fa fa-circle-o"></i> Merchant Settlements</a></li>
+            <li><a href="{{route('merchantrules.index')}}"><i class="fa fa-circle-o"></i> Merchant Settlements</a></li>
           </ul>
 
         </li>
@@ -43,6 +43,7 @@
           <ul class="treeview-menu">
             <li><a href="{{route('gateways.index')}}"><i class="fa fa-circle-o"></i> Gateways</a></li>
             <li><a href="{{route('methodtypes.index')}}"><i class="fa fa-circle-o"></i> Method Types</a></li>
+            <li><a href="{{route('ipn.index')}}"><i class="fa fa-circle-o"></i> IPN</a></li>
           </ul>
 
         </li>

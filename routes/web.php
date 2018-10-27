@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/verify/{verifyToken}', 'UserController@verifyUser')->name('verifyUser');
+
 Auth::routes();
 
 Route::get('/', array('as' => 'landing', 'uses' => 'PagesController@getLogin'));
@@ -38,8 +40,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('/settlementrules', 'SettingsController@saveSettlementrules')->name('saveSettlementrules');
 	Route::post('/settlementrulesupdate', 'SettingsController@UpdateSettlementrules')->name('updateSettlementrules');
 
-	Route::get('/merchantrule', 'PagesController@merchantrule')->name('merchantrule');
-	Route::post('/merchantrule', 'SettingsController@saveMerchantrule')->name('saveMerchantrule');
 	Route::post('/merchantruleUpdate', 'SettingsController@updateMerchantrule')->name('updateMerchantrule');
 
 
@@ -60,8 +60,14 @@ Route::group(['middleware' => 'auth'], function(){
 	    'users' => 'UserController',
 	    'refunds' => 'RefundController',
 	    'settlementrules' => 'SettlementruleController',
+	    'merchantrules' => 'MerchantrulesController',
+	    'self-registration' => 'SelfRegController',
+	    'documents' => 'DocumentController',
+	    'ipn' => 'IpnController',
 	]);
 
+
 	Route::post('/refunds/search', 'RefundController@search')->name('refunds.search');
+	Route::post('/users/api/search/', 'UserController@apiUserList')->name('users.apisearch');
 
 });

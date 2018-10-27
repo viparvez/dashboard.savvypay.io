@@ -94,7 +94,8 @@ class PagesController extends Controller
                                 FROM
                                     users
                                 WHERE
-                                    userdeleted = '0'
+                                    deleted = '0'
+                                    api_user = '1'
                                 AND id NOT IN (
                                     SELECT DISTINCT
                                         (users.id)

@@ -20,9 +20,10 @@ class UserController extends Controller
     {
         $users = DB::table('users')
                 ->select('users.id','users.name','users.email', 'users.active', 'users.created_at', 'addresses.phone', 'addresses.image', 'addresses.line1', 'addresses.line2', 'addresses.po', 'addresses.pocode', 
-                    'addresses.area', 'addresses.city', 'addresses.country' )
+                    'addresses.area', 'addresses.city', 'addresses.country', 'users.api_user')
                 ->leftJoin('addresses', 'users.id', '=', 'addresses.user_id')
                 ->where(['users.deleted'=>0])
+                ->orderBy('created_at', 'DESC')
                 ->get();
         $merchants = User::where(['api_user' => '1'])->get();
         return view('layouts.pages.users', compact('users','merchants'));
@@ -47,10 +48,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|Regex:/^[\D]+$/i|max:70',
-            'username' => 'required|Regex:/^[\D]+$/i|max:20|unique:users',
-            'email' => 'required|email|unique:users',
+            'name' => 'required|Regex:/^[\D]+$/i|max:255',
             'password' => 'required|confirmed|min:6',
+            'username' => 'required|Regex:/^[\D]+$/i|max:20|unique:users',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'line1' => 'required',
             'po' => 'required',
@@ -58,8 +58,18 @@ class UserController extends Controller
             'area' => 'required',
             'city' => 'required',
             'country' => 'required',
-            'phone' => 'required|numeric|unique:addresses',
         ]);
+
+
+        $validator->sometimes('email', 'required|email|unique:users', function($input)
+        {
+            return $input->api_user == 0;
+        });
+
+        $validator->sometimes('phone', 'required|numeric|unique:addresses', function($input)
+        {
+            return $input->api_user == 0;
+        });
 
 
         if ($validator->fails()) {
@@ -70,14 +80,14 @@ class UserController extends Controller
 
         try {
 
+          if($request->api_user == 1){
+
             $id = DB::table('users')->insertGetId(
                 [
                     'name' => $request->name,
-                    'email' => $request->email,
                     'username' => $request->username,
                     'password'   => bcrypt($request->password),
                     'api_user' => $request->api_user,
-                    'merchant_user_id' => $request->merchant_user_id,
                     'active' => '1',
                     'deleted' => '0',
                     'createdbyuser_id' => Auth::user()->id,
@@ -87,12 +97,65 @@ class UserController extends Controller
                 ]
             );
 
-            /*foreach ($request->role as $key => $value) {
-                DB::table('role_user')->insert([
+            if ($request->hasFile('image')) {
+
+                $file = $request->file('image');
+                $name = $id.'.'.$file->getClientOriginalExtension();
+                $file->move('public/uploads', $name.'.jpg');
+                $image = 'public/uploads/'.$name.'.jpg';
+                
+            } else {
+                $image = 'uploads/default.jpg';
+            }
+
+            DB::table('addresses')->insert(
+                [
+                    'line1' => $request->line1,
+                    'line2' => $request->line2,
+                    'po' => $request->po,
+                    'pocode' => $request->pocode,
+                    'area' => $request->area,
+                    'city' => $request->city,
+                    'country' => $request->country,
                     'user_id' => $id,
-                    'role_id' => $value,
-                ]);
-            }*/
+                    'image' => url('/')."/public/uploads/".$name,
+                    'createdbyuser_id' => Auth::user()->id,
+                    'updatedbyuser_id' => Auth::user()->id,
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ]
+            );
+
+            if (!empty($request->merchant_user_id)) {
+              DB::table('merchantapirelations')->insert(
+                  [
+                      'merchant_user_id' => $request->merchant_user_id,
+                      'api_user_id' => $id,
+                      'createdbyuser_id' => Auth::user()->id,
+                      'updatedbyuser_id' => Auth::user()->id,
+                      'created_at' => date('Y-m-d h:i:s'),
+                      'updated_at' => date('Y-m-d h:i:s'),
+                  ]
+              );
+            }
+
+          } else {
+
+            $id = DB::table('users')->insertGetId(
+                [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'username' => $request->username,
+                    'password'   => bcrypt($request->password),
+                    'api_user' => $request->api_user,
+                    'active' => '1',
+                    'deleted' => '0',
+                    'createdbyuser_id' => Auth::user()->id,
+                    'updatedbyuser_id' => Auth::user()->id,
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ]
+            );
 
             if ($request->hasFile('image')) {
 
@@ -124,6 +187,28 @@ class UserController extends Controller
                 ]
             );
 
+            foreach ($request->api_user_id as $key => $value) {
+                DB::table('merchantapirelations')->insert([
+                    'merchant_user_id' => $id,
+                    'api_user_id' => $value,
+                    'createdbyuser_id' => Auth::user()->id,
+                    'updatedbyuser_id' => Auth::user()->id,
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => date('Y-m-d h:i:s'),
+                ]);
+            }
+
+          }
+
+            
+
+            /*foreach ($request->role as $key => $value) {
+                DB::table('role_user')->insert([
+                    'user_id' => $id,
+                    'role_id' => $value,
+                ]);
+            }*/
+
 
             DB::commit();
 
@@ -133,7 +218,7 @@ class UserController extends Controller
 
           DB::rollback();
           echo $e->getMessage();
-          return response()->json(['error'=>array('Could not add user')]);
+          //return response()->json(['error'=>array('Could not add user')]);
 
         }
     }
@@ -367,7 +452,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|Regex:/^[\D]+$/i|max:70',
+            'name' => 'required|Regex:/^[\D]+$/i|max:255',
             'email' => 'required|email|unique:users,email,'.$id,
             'image' => 'image|mimes:jpeg,png,jpg|max:2048',
             'line1' => 'required',
@@ -376,7 +461,7 @@ class UserController extends Controller
             'area' => 'required',
             'city' => 'required',
             'country' => 'required',
-            'phone' => 'required|numeric',
+            'phone' => 'required|numeric|unique:addresses,phone,'.$id,
         ]);
 
 
@@ -453,4 +538,48 @@ class UserController extends Controller
     {
         //
     }
+
+
+    public function apiUserList(Request $request) {
+      
+      $api_user =  User::where([
+              'api_user' => '1', 
+              'active' => '1', 
+              'deleted' => '0', 
+              'username' => $request->username
+            ])->first();
+
+      if (empty($api_user)) {
+          return response()->json(['error'=> array(
+              $request->username.' not a valid api user.'
+          )]);
+      }
+
+      return response()->json(['success'=> array(
+          'id' => $api_user->id,
+          'username' => $api_user->username,
+      )]);
+
+    }
+
+
+    public function verifyUser($verifyToken) {
+      $find = User::where(['verifyToken' => $verifyToken, 'active' => '0'])->where('verificationExpires', '>=', date('Y-m-d h:i:s'))->first();
+
+      if (!empty($find)) {
+
+        User::where(['id' => $find->id])->update(
+            [
+                'active' => '1',
+            ]
+        );
+
+        return view('layouts.pages.verificationsuccess');
+        
+      } else {
+        return view('layouts.pages.verificationerror');
+      }
+
+    }
+
 }

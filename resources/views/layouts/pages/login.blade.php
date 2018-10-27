@@ -96,6 +96,10 @@
       increaseArea: '20%' // optional
     });
   });
+
+  setInterval(function() {
+    window.location.reload();
+  }, 600000); 
 </script>
 
 </body>

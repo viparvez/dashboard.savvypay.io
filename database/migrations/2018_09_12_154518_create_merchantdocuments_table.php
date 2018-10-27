@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransactionstatushistoriesTable extends Migration
+class CreateMerchantdocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTransactionstatushistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactionstatushistories', function (Blueprint $table) {
+        Schema::create('merchantdocuments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('transaction_id')->unsigned();
-            $table->foreign('transaction_id')->references('id')->on('transactions');
-            $table->String('status');
+            $table->String('fileType');
+            $table->String('fileName');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('createdbyuser_id')->unsigned();
             $table->foreign('createdbyuser_id')->references('id')->on('users');
             $table->integer('updatedbyuser_id')->unsigned();
@@ -33,6 +34,6 @@ class CreateTransactionstatushistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactionstatushistories');
+        Schema::dropIfExists('merchantdocuments');
     }
 }

@@ -54,7 +54,7 @@
                     <td>
                       <b>&nbsp; | &nbsp;</b>
                       @foreach($avuser->merchantrule as $rule)
-                        <a href="#" data-toggle="tooltip" title="{{$rule->Settlementrule->Methodtype->name}} - {{$rule->Settlementrule->amount}}
+                        <a href="#" onclick="show('{{route('settlementrules.show',$rule->Settlementrule->id)}}')" data-toggle="tooltip" title="{{$rule->Settlementrule->Methodtype->name}} - {{$rule->Settlementrule->amount}}
                          @if($rule->Settlementrule->bill_policy == 'PERCENTAGE')
                           %
                          @elseif($rule->Settlementrule->bill_policy == 'AMOUNT')
@@ -66,10 +66,7 @@
                         <b>&nbsp; | &nbsp;</b>
                       @endforeach
                     </td>
-                    <td>
-                      <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal2{{$avuser->id}}" href="#">
-                      <span class="fa fa-edit"> EDIT</span></a>
-                    </td>
+                    <td><a class="btn btn-xs btn-primary" onclick="show('{{route('merchantrules.edit',$avuser->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
                 @endforeach
                 </tbody>
@@ -88,7 +85,7 @@
                     </div>
                     <div class="modal-body">
 
-                    <form method="POST" action="{{route('saveMerchantrule')}}">
+                    <form method="POST" action="{{route('merchantrules.store')}}">
                       {{csrf_field()}}
                       <table class="table table-responsive text-center">
                         <tbody>
@@ -122,16 +119,13 @@
 
                         <tr>
                           <td colspan="2">
-                            <button class="btn btn-success pull-right"> SAVE </button>
+                            <button class="btn btn-block btn-success btn-sm"> SAVE </button>
                           </td>
                         </tr>
                         </tbody>
                       </table>
                     </form>
 
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                   </div>
                   
@@ -181,6 +175,30 @@
     </section>
     <!-- /.content -->
   </div>
+
+
+  <div class="modal fade" id="preview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal'>&times;</button>
+        </div>
+        <div class='alert alert-danger print-error-msg' id='error_messages' style='display:none'>
+          <ul></ul>
+        </div>
+        <div class="text-center">
+          <img src="{{url('/')}}/public/img/spinner.gif" id="spinner">
+        </div>
+
+        <div id="showcontent">
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 
   <!-- /.content-wrapper -->
   <footer class="main-footer">

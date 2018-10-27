@@ -44,7 +44,7 @@
                   <th>Email</th>
                   <th>Status</th>
                   <th>Registered On</th>
-                  <th>Phone</th>
+                  <th>Type</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -61,7 +61,13 @@
                       @endif
                     </td>
                     <td>{{$user->created_at}}</td>
-                    <td>{{$user->phone}}</td>
+                    <td>
+                      @if($user->api_user == '1')
+                        <span class="btn btn-xs bg-purple btn-flat">API USER</span>
+                      @else
+                        <span class="btn btn-xs bg-orange btn-flat">MERCHANT USER</span>
+                      @endif
+                    </td>
                     <td><a class="btn btn-xs btn-primary" onclick="show('{{route('users.show',$user->id)}}')"><span class="fa fa-expand"></span></a></td>
                   </tr>
                @endforeach
@@ -102,14 +108,14 @@
                 <input type="text" name="name" class="form-control" required="" placeholder="Name">
               </div>
 
-              <div class="form-group">
+              <div class="form-group" id="email">
                 <label for="email">Email:</label>
-                <input type="text" name="email" class="form-control" required="" placeholder="Email">
+                <input type="text" name="email"  class="form-control" required="" placeholder="Email">
               </div>
 
-              <div class="form-group">
+              <div class="form-group" id="username">
                 <label for="username">Username:</label>
-                <input type="text" name="username" class="form-control" required="" placeholder="Username">
+                <input type="text" name="username"  class="form-control" required="" placeholder="Username">
               </div>
 
               <div class="form-group">
@@ -138,7 +144,7 @@
                 </select>
               </div>
 
-              <div class="form-group" id="merchantOps">
+              <div class="form-group" id="merchantOps" hidden="">
                 <label for="country">Merchant Account:</label>
                 <select class="form-control" name="merchant_user_id">
                   <option value="">SELECT</option>
@@ -148,9 +154,14 @@
                 </select>
               </div>
               
-              <div class="form-group">
+              <div class="form-group" id="phone">
                 <label for="phone">Phone:</label>
                 <input type="phone" name="phone" class="form-control" required="" placeholder="Phone">
+              </div>
+
+              <div class="form-group">
+                <div id="api_user_search"></div>
+                <a href="" id="addApiuser" data-toggle="modal" data-target="#secondOrderPrev">ADD API USERS</a>   
               </div>
 
             </div>
@@ -194,6 +205,7 @@
                 </select>
               </div>
 
+
               <div class="form-group">
                 <label>Image</label>
                 <input type="file" name="image" id="image" >
@@ -234,6 +246,36 @@
     </div>
   </div>
 
+
+    <div class="modal fade" id="secondOrderPrev" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="show">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger print-error-msg" id="error_messages_2" style="display:none">
+                <ul></ul>
+            </div>
+            <div id="showcontent_2">
+              <form id="user_search" method="POST" action="{{route('users.apisearch')}}">
+              {{csrf_field()}}
+                <div class="form-group">
+                  <label for="name">User Name</label>
+                  <input type="text" name="username" class="form-control" required="" placeholder="User Name">
+                </div>
+                <button class='btn btn-block btn-success btn-sm' id='submit_search' type='submit_search'>Submit</button>
+                <button class='btn btn-block btn-success btn-sm' id='loading' style='display: none' disabled=''>Working...</button>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -252,4 +294,101 @@
 
 @section('footer-resources')
   @include('layouts.resources.footer.transactions')
+
+  <script type="text/javascript">
+  /*
+Function for new data insertion\
+*/
+
+$(document).ready(function() {
+
+      $("#submit_search").click(function(e){
+
+        e.preventDefault();
+
+        var _url = $("#user_search").attr("action");
+
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+
+        var _data = new FormData($('#user_search')[0]);
+
+          $.ajax({
+
+              url: _url,
+
+              type:'POST',
+
+              dataType:"json",
+
+              data:_data,
+
+              processData: false,
+              
+              contentType: false,
+
+              success: function(data) {
+                  
+                  $('#result').html("");
+                  $('.print-error-msg').css("display","none");
+
+                  if($.isEmptyObject(data.error)){
+
+                    if($("#"+data.success.id).length) {
+
+                      alert('Already added.')
+
+                    } else {
+
+                      $('#api_user_search').append( 
+                        "<div id='"+data.success.id+"'> <input type='hidden' name='api_user_id[]' value='"+data.success.id+"'><strong>"+data.success.username+"</strong> <button onclick='removeUser("+data.success.id+")' class='btn btn-xs btn-danger'>X</button></div>" 
+                        );
+
+                    }
+
+                  }else{
+
+                    printErrorMsg(data.error);
+
+                  }
+
+              }
+
+          });
+
+      }); 
+
+
+      $(document).ajaxStart(function () {
+          $("#loading").show();
+          $("#submit_search").hide();
+      }).ajaxStop(function () {
+          $("#loading").hide();
+          $("#submit_search").show();
+      });
+
+  });
+
+  setTimeout(function() {
+      $('#successMessage').fadeOut('fast');
+  }, 2000); 
+
+
+  function printErrorMsg_2 (msg) {
+    $(".print-error-msg").find("ul").html('');
+    $(".print-error-msg").css('display','block');
+    $.each( msg, function( key, value ) {
+      $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+    });
+
+  }
+
+  function removeUser(id) {
+    $('#'+id).remove();
+  }
+
+</script>
 @endsection

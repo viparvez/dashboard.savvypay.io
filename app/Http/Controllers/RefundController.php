@@ -90,7 +90,7 @@ class RefundController extends Controller
         
         $refund = Refund::where(['id' => $id])->first();
 
-        if ($refund->status = 'REJECTED') {
+        if ($refund->status == 'REJECTED') {
             $reason = "
                 <tr>
                   <td>Rejection reason</td><td>".$refund->rejectionreason."</td>

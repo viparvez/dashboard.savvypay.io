@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class merchantrule extends Model
+class Merchantrule extends Model
 {
     protected $fillable = ['user_id','rule_id','deleted'];
 

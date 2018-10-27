@@ -14,6 +14,9 @@
     .details-view tr td:nth-child(even) {
       text-align: right;
     }
+    .modal {
+      overflow-y:auto;
+    }
   </style>
 
 </head>

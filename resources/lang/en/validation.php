@@ -120,6 +120,10 @@ return [
         ],
         'methodtype_id' => [
             'required' => 'Method type field is required.'
+        ],
+        'web_service_url' => [
+            'required' => 'You need to put the IPN URL at least.',
+            'regex' => 'Invalid URL.'
         ]
     ],
 

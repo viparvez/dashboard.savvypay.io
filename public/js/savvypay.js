@@ -9,6 +9,8 @@ function show(url) {
 	$('#preview').modal('show');
 	$("#spinner").show();
   $("#preview").find("#showcontent").html("");
+  $("#error_messages").css('display','none');
+  $(".print-error-msg").css('display','none');
 	 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -189,9 +191,15 @@ $(document).ready(function() {
 
 $("#api_user").on("click", function(){
   if (this.value == '1') {
-    $("#merchantOps").hide();
-  } else {
     $("#merchantOps").show();
+    $("#addApiuser").hide();
+    $("#email").hide();
+    $("#phone").hide();
+  } else {
+    $("#merchantOps").hide();
+    $("#addApiuser").show();
+    $("#email").show();
+    $("#phone").show();
   }
 });
 
